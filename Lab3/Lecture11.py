@@ -63,16 +63,25 @@ def kandell(x, x_model):
 
 if __name__ == "__main__":
     from matplotlib import pyplot as plt
-    
-    # Time vector
-    start, stop = 0, 4 * np.pi
-    N = 512
-    
+        
     # Signal
     h = 0.02
     x = np.array([sum([(k * np.exp(-h * i / k) * np.cos(2 * np.pi * k * h * i + np.pi / 4.)) for k in range(1, 4)]) for i in range(1, 201)])
+
+
+    # test signal
+    N = 128
+    # Time vector
+    t = np.linspace(0, 1, N, endpoint=True)
+
+    # Amplitudes and freqs
+    f1, f2, f3 = 2, 7, 12
+    A1, A2, A3 = 5, 1, 3
+
+    # Signal
+    x = A1 * np.cos(2*np.pi*f1*t) + A2 * np.cos(2*np.pi*f2*t) + A3 * np.cos(2*np.pi*f3*t)
     
-    f, alfa, A, fi = prony(x, (stop - start) / N)
+    f, alfa, A, fi = prony(x, 0.1)
     plt.stem(2*A)
     plt.plot()
     plt.grid()
@@ -111,7 +120,5 @@ if __name__ == "__main__":
     plt.grid()
     for delta in [1, 8]:
         ff = ff[delta:100]
-        print((ff.argmax() + delta) / sz * 365, "year")
-    print(len(temp))
-    
+        print(sz / ((ff.argmax() + delta)), "days")    
     plt.show()
